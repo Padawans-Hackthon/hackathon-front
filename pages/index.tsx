@@ -6,7 +6,6 @@ import { AiOutlinePoweroff, AiOutlineMenu, AiOutlineHome } from "react-icons/ai"
 import { SubjectCard } from "../components/SubjectCard"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { BsPerson } from "react-icons/bs"
 
 import jwt_decode from "jwt-decode"
 import { MdOutlinePeopleAlt } from "react-icons/md"
@@ -31,6 +30,7 @@ export interface userProps {
 		student: {
 			name: string
 			permissionType: "student" | "teacher"
+			url: string
 		}
 		teacher: TeacherProps[]
 	}
@@ -42,12 +42,13 @@ const Home = ({ token }: any) => {
 	const userData: userProps = jwt_decode(token)
 	const [isTeacher, setIsTeacher] = useState(false)
 
+	console.log(userData)
 
 	function signOut() {
 		destroyCookie(null, "loginauth.token")
 		reload()
 	}
-	
+
 	useEffect(() => {
 		setIsTeacher(userData.user.student.permissionType === "teacher")
 	}, [])
@@ -57,16 +58,16 @@ const Home = ({ token }: any) => {
 			<header className="h-[40vh] bg-gradient-to-r from-[#55AF9A] to-[#000000] flex-1">
 				<div className="h-full flex-1 bg-[url('/circles-index.svg')] bg-cover">
 					<div className="flex-1 h-[25%] bg-black bg-opacity-70 z-20 flex items-center justify-center">
-						<Image src="/logo.svg" alt="logo" width={80} height={80} />
+						<Image src="/logo.svg" alt="logo" width={80} height={80}/>
 					</div>
 
 					<div className="flex-1 flex justify-center items-center mt-16">
 						<div className="flex flex-col gap-3 items-center">
 							<div className="bg-gray-200 w-[6vw] h-[6vw] rounded-full flex justify-center items-center">
-								<BsPerson size={56}/>
+								<img src={`${userData.user.student.url}`} alt="foto de perfil" className="w-32 h-18 rounded-full"/>
 							</div>
 							<p className="text-gray-200 font-semibold font-poppins text-xl">
-								{ userData.user.student.name}
+								{userData.user.student.name}
 							</p>
 						</div>
 					</div>
@@ -84,10 +85,18 @@ const Home = ({ token }: any) => {
 				</div>
 			</header>
 			<div className="max-w-screen-xl mt-24 m-auto">
-				<p className="text-3xl font-poppins">Disciplina</p>
-				<div className="mt-4 flex justify-evenly flex-wrap">
+				<p className="text-3xl font-poppins text-center sm:text-left sm:inline-flex sm:border-b sm:border-black">
+					Disciplinas
+				</p>
+				<div className="mt-4 flex justify-evenly flex-wrap mb-8">
 					{userData.user.teacher[0].subject.map((e) => (
-						<SubjectCard color="#C64736" subject={e} teacher={userData.user.teacher[0].name} key={e} isTeacher={isTeacher}/>
+						<SubjectCard
+							color="#C64736"
+							subject={e}
+							teacher={userData.user.teacher[0].name}
+							key={e}
+							isTeacher={isTeacher}
+						/>
 					))}
 				</div>
 			</div>

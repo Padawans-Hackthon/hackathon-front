@@ -16,8 +16,8 @@ const Exercise = ({ token }: any) => {
 
 
 	return (
-		<div className="flex flex-1 h-screen font-poppins">
-			<div className="w-[60%] py-12 flex flex-col gap-12">
+		<div className="sm:flex flex-1 h-screen font-poppins">
+			<div className="sm:w-[60%] py-12 flex flex-col gap-12">
 				<Link href={`/subjects/${thisSubject}`}>
 					<a className="text-3xl font-semibold mt-16 ml-14">{"< Voltar"}</a>
 				</Link>

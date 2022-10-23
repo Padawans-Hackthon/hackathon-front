@@ -49,12 +49,12 @@ const Subjects = () => {
 				<div className="flex gap-4 absolute top-3 left-4 items-center font-poppins">
 					<AiOutlineMenu
 						onClick={onOpen}
-						className="text-white cursor-pointer"
+						className="sm:text-white cursor-pointer"
 						size={32}
 					/>
 					<p className="text-white text-xl">{thisSubject}</p>
 				</div>
-				<div className="flex-1 h-screen bg-gradient-to-b from-[#04AF91] to-[#001D18] w-[30%]">
+				<div className="sm:flex-1 sm:h-screen bg-gradient-to-b from-[#04AF91] to-[#001D18] sm:w-[30%] hidden sm:flex">
 					<div className=" bg-[url('/circles-subject.svg')] bg-cover flex-1 h-full">
 						<div className="text-white flex flex-col gap-12 items-center">
 							<div className="flex flex-col gap-4 items-center mt-48">
@@ -84,11 +84,11 @@ const Subjects = () => {
 					</div>
 				</div>
 
-				<div className="w-[70%]">
-					<p className="mt-44 ml-28 text-[#2DAA94] text-7xl font-semibold font-poppins">
+				<div className="sm:w-[70%] flex flex-col sm:block">
+					<p className="mt-44 sm:ml-28 text-[#2DAA94] sm:text-7xl font-semibold font-poppins text-5xl">
 						Exercícios
 					</p>
-					<div className="mt-20 flex flex-col gap-16 ml-28 overflow-y-scroll max-h-[60vh]">
+					<div className="mt-20 flex flex-col gap-16 sm:ml-28 overflow-y-scroll max-h-[60vh]">
 						<ExerciceCard subject={thisSubject} isTeacher={isTeacher} />
 						<ExerciceCard subject={thisSubject} isTeacher={isTeacher} />
 						<ExerciceCard subject={thisSubject} isTeacher={isTeacher} />
