@@ -33,9 +33,7 @@ const Exercise = ({ token }: any) => {
 				<div className="ml-24">
 					<p className="font-semibold text-xl">Descrição: </p>
 					<div className="w-[70%] h-[10vh] bg-[#BAE4DD] mt-1 p-2">
-						Nesta seleção está concentrada a decrição do exercício, assim como
-						instruções e avisos pertinentes de acordo com o professor. Apenas o
-						professor pode alterar esta parte.
+						Nesta seleção está concentrada a decrição do exercício.
 					</div>
 					<div className="w-[70%] h-[5vh] bg-[#BAE4DD] mt-5 flex gap-2 items-center p-2">
 						<AiOutlineFileAdd size={32} />
