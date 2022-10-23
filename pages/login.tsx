@@ -25,10 +25,11 @@ const Login = ({ data }: databaseProps) => {
 	const { register, handleSubmit, reset } = useForm()
 	const [inputVisible, setInputVisible] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const [teacherCheckBox, setTeacherCheckBox] = useState(false)
 
 	const onSubmit = async (formData: any) => {
 		setLoading(true)
-		const response = await signIn(formData.registration, formData.password)
+		const response = await signIn(formData.registration, formData.password, formData.teacher)
 
 		if (response?.data) {
 			signInUser(response.data.token)
@@ -98,6 +99,16 @@ const Login = ({ data }: databaseProps) => {
 										)}
 									</div>
 								</div>
+							</div>
+						</div>
+						<div className="py-2 flex flex-col gap-3 text-white">
+							<div className="flex gap-3">
+								<input type="checkbox" id="teacher" {...register("teacher")}/>
+								<label htmlFor="teacher" >Professor</label>
+							</div>
+							<div className="flex gap-3">
+								<input type="checkbox" id="student" />
+								<label htmlFor="student">Estudante</label>
 							</div>
 						</div>
 						<button className="bg-[#188578] w-60 h-14 rounded-lg text-3xl hover:opacity-90 flex items-center justify-center">

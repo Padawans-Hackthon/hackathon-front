@@ -5,23 +5,33 @@ import { TbArrowBigTop, TbArrowBigDown } from "react-icons/tb"
 
 import { Divider } from "@chakra-ui/react"
 
-export const ResponseCard = () => {
+export interface ResponseCardProps {
+	subject?: string
+	question: string
+	likes?: number
+	user: string
+	sk?: string
+	pk?: string
+	title?: string
+}
+
+export const ResponseCard = ({ question, user }: ResponseCardProps) => {
 	return (
 		<div className="box-content">
 			<div className="flex justify-center mt-4 font-poppins">
 				<div className="bg-gray-200 rounded-full relative top-4 left-0 w-14 h-14 flex justify-center items-center">
 					<BsPerson size={36} />
 				</div>
-				<div className="w-[80%]  ml-4">
+				<div className="w-[80%] ml-4">
 					<div className="flex justify-between">
 						<div>
-							<p className="font-bold text-3xl mt-6">Gustavo Mattos</p>
+							<p className="font-bold text-3xl mt-6">{ user }</p>
 							<p className="text-xl mt-4">
-								Olá, alguém poderia me ajudar na questão 9?
+								{ question }
 							</p>
 							<div className="flex gap-2 mt-4 items-center">
 								<BsChatRight size={32} />
-								<p className="text-lg">1</p>
+								<p className="text-lg">0</p>
 							</div>
 						</div>
                         <div className="flex flex-col gap-3 mt-12">
@@ -49,7 +59,7 @@ export const ResponseCard = () => {
 							</button>
 						</div>
 					</div>
-					<div className="mt-12 flex justify-between">
+					{/* <div className="mt-12 flex justify-between">
 						<div className="flex flex-col gap-6">
 							<div className="flex gap-2 items-center">
 								<div className="bg-gray-200 rounded-full w-10 h-10 flex justify-center items-center">
@@ -68,7 +78,7 @@ export const ResponseCard = () => {
 							<TbArrowBigTop size={24} className="text-blue-500 cursor-pointer" />
 							<TbArrowBigDown size={24} className="text-red-500 cursor-pointer" />
 						</div>
-					</div>
+					</div> */}
 					<Divider borderWidth="2px" className="mt-10" />
 				</div>
 			</div>

@@ -6,6 +6,7 @@ import { AiOutlinePoweroff, AiOutlineMenu, AiOutlineHome } from "react-icons/ai"
 import { SubjectCard } from "../components/SubjectCard"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { BsPerson } from "react-icons/bs"
 
 import jwt_decode from "jwt-decode"
 import { MdOutlinePeopleAlt } from "react-icons/md"
@@ -18,6 +19,7 @@ import {
 	DrawerContent,
 	DrawerCloseButton,
 } from "@chakra-ui/react"
+import { useEffect, useState } from "react"
 
 export interface userProps {
 	user: {
@@ -36,12 +38,16 @@ const Home = ({ token }: any) => {
 	const { isOpen, onClose, onOpen } = useDisclosure()
 	const { asPath, reload } = useRouter()
 	const userData: userProps = jwt_decode(token)
-	console.log(userData)
+	const [isTeacher, setIsTeacher] = useState(false)
 
 	function signOut() {
 		destroyCookie(null, "loginauth.token")
 		reload()
 	}
+	
+	useEffect(() => {
+		setIsTeacher(userData.user.permissionType === "teacher")
+	}, [])
 
 	return (
 		<>
@@ -53,7 +59,9 @@ const Home = ({ token }: any) => {
 
 					<div className="flex-1 flex justify-center items-center mt-16">
 						<div className="flex flex-col gap-3 items-center">
-							<div className="bg-gray-200 w-[6vw] h-[6vw] rounded-full"></div>
+							<div className="bg-gray-200 w-[6vw] h-[6vw] rounded-full flex justify-center items-center">
+								<BsPerson size={56}/>
+							</div>
 							<p className="text-gray-200 font-semibold font-poppins text-xl">
 								{ userData.user.name }
 							</p>
@@ -76,7 +84,7 @@ const Home = ({ token }: any) => {
 				<p className="text-3xl font-poppins">Disciplina</p>
 				<div className="mt-4 flex justify-evenly flex-wrap">
 					{userData.user.subject.map((e) => (
-						<SubjectCard color="#C64736" subject={e} teacher="Fulano" key={e} />
+						<SubjectCard color="#C64736" subject={e} teacher="Fulano" key={e} isTeacher={isTeacher}/>
 					))}
 				</div>
 			</div>
