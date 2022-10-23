@@ -12,13 +12,18 @@
     "@chakra-ui/react": "^2.3.6",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@types/cookies": "^0.7.7",
     "axios": "^1.1.3",
     "framer-motion": "^7.6.1",
+    "jwt-decode": "^3.1.2",
     "next": "12.3.1",
+    "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.38.0",
-    "react-icons": "^4.6.0"
+    "react-icons": "^4.6.0",
+    "tailwind-scrollbar": "^2.0.1"
   },
   "devDependencies": {
     "@types/node": "18.11.3",
