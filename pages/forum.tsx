@@ -63,6 +63,7 @@ const Forum = ({ token, posts }: ForumProps) => {
 				status: "error"
 			})
 		}
+		reset()
 	}
 
 	useEffect(() => {
@@ -137,7 +138,7 @@ const Forum = ({ token, posts }: ForumProps) => {
 					<div className="mt-8 flex justify-center rounded-xl mb-4">
 						<div className="bg-white w-[90%] rounded-xl ">
 							{posts.map((e) => (
-								<ResponseCard key={e.title} question={e.question} user={e.user} subject={e.subject} isTeacher={isTeacher}/>
+								<ResponseCard key={e.title} question={e.question} user={e.user} subject={e.subject} isTeacher={isTeacher} likes={e.likes}/>
 							))}
 						</div>
 					</div>

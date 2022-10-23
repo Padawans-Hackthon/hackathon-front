@@ -42,8 +42,6 @@ const Home = ({ token }: any) => {
 	const userData: userProps = jwt_decode(token)
 	const [isTeacher, setIsTeacher] = useState(false)
 
-	console.log(userData)
-
 	function signOut() {
 		destroyCookie(null, "loginauth.token")
 		reload()
@@ -64,7 +62,7 @@ const Home = ({ token }: any) => {
 					<div className="flex-1 flex justify-center items-center mt-16">
 						<div className="flex flex-col gap-3 items-center">
 							<div className="bg-gray-200 w-[6vw] h-[6vw] rounded-full flex justify-center items-center">
-								<img src={`${userData.user.student.url}`} alt="foto de perfil" className="w-32 h-18 rounded-full"/>
+								<img src={`${userData.user.student.url}`} alt="foto de perfil" className="w-30 h-24 rounded-full"/>
 							</div>
 							<p className="text-gray-200 font-semibold font-poppins text-xl">
 								{userData.user.student.name}

@@ -6,7 +6,8 @@ import { BsCircle } from "react-icons/bs"
 import { FaCheckCircle } from "react-icons/fa"
 
 import { Divider } from "@chakra-ui/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { api } from "../assets/api"
 
 export interface ResponseCardProps {
 	subject?: string
@@ -20,13 +21,24 @@ export interface ResponseCardProps {
 }
 
 export const ResponseCard = ({ question, user, subject, isTeacher }: ResponseCardProps) => {
+	const [imageUrl, setImageUrl] = useState("")
 	const [isClosed, setIsClosed] = useState(false)
+
+	useEffect(() => {
+		api.post("/user/getImageStudent", {
+			name: user
+		}).then((e) => {
+			const data = e.data.url
+			setImageUrl(data)
+		})
+
+	}, [])
 
 	return (
 		<div className="box-content">
 			<div className="flex justify-center mt-4 font-poppins">
 				<div className="bg-gray-200 rounded-full relative top-4 left-0 w-14 h-14 flex justify-center items-center">
-					<BsPerson size={36} />
+					<img src={imageUrl} alt="imagem de perfil" className="rounded-full"/>
 				</div>
 				<div className="w-[80%] ml-4">
 					<div className="flex justify-between">

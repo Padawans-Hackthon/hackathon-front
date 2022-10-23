@@ -19,7 +19,7 @@ export const SubjectCard = ({ color, teacher, subject, isTeacher }: SubjectCardP
 						className="rounded-full w-20 h-20"
 						style={{ backgroundColor: isTeacher ? color : "#CFCFCF" }}
 					></div>
-					{!isTeacher && <p className="font-poppins">{teacher}</p>}
+					{!isTeacher && <p className="font-poppins font-semibold">{teacher}</p>}
 				</div>
 				<p className="font-bold text-lg font-poppins text-center">{subject}</p>
 			</a>
