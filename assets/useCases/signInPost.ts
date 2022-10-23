@@ -1,25 +1,28 @@
-import { api } from "../api";
+import { api } from "../api"
 
 export async function signIn(registration: string, password: string, type: boolean) {
-    let typeUser = "student"
+	let typeUser = "student"
 
-    if (type) {
-        typeUser = "teacher"
-    }
+	if (type) {
+		typeUser = "teacher"
+	}
 
-    try {
-        const response = await api.post('/user/login', {
-            pk: registration,
-            sk: password
-        }, {
-            params: {
-                typeUser
-            }
-        })
+	try {
+		const response = await api.post(
+			"/user/login",
+			{
+				pk: registration,
+				sk: password,
+			},
+			{
+				params: {
+					typeUser,
+				},
+			}
+		)
 
-        return response
-    } catch (e) {
-        console.log(e)
-    }
-    
+		return response
+	} catch (e) {
+		console.log(e)
+	}
 }

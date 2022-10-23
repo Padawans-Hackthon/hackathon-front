@@ -49,7 +49,7 @@ const Login = ({ data }: databaseProps) => {
 	return (
 		<div className="flex flex-1 h-screen w-screen bg-gradient-to-r from-[#55AF9A] to-[#000000]">
 			<Image src="/circles.svg" alt="background circles" layout="fill" className="z-0" />
-			<div className="w-[70%] flex justify-center text-white text-6xl font-poppins font-semibold flex-col z-10">
+			<div className="sm:flex hidden w-[70%] justify-center text-white text-6xl font-poppins font-semibold flex-col z-10">
 				<div className="ml-8 z-10">
 					<Image src="/logo.svg" alt="logo do site" width={180} height={180} />
 				</div>
@@ -64,7 +64,7 @@ const Login = ({ data }: databaseProps) => {
 					>
 						<div className="flex flex-col gap-8 w-[70%]">
 							<div className="flex flex-col gap-2">
-								<label htmlFor="email">Matrícula</label>
+								<label htmlFor="email">Matrícula/Email</label>
 								<input
 									type="text"
 									id="email"
@@ -101,7 +101,7 @@ const Login = ({ data }: databaseProps) => {
 								</div>
 							</div>
 						</div>
-						<div className="py-2 flex flex-col gap-3 text-white">
+						<div className="py-2 flex gap-12 text-white">
 							<div className="flex gap-3">
 								<input type="checkbox" id="teacher" {...register("teacher")}/>
 								<label htmlFor="teacher" >Professor</label>

@@ -2,16 +2,18 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { parseCookies } from "nookies"
+import jwt_decode from "jwt-decode"
 
 import { AiOutlineFileAdd, AiOutlineArrowRight } from "react-icons/ai"
 
-const Exercise = () => {
+const Exercise = ({ token }: any) => {
 	const { asPath } = useRouter()
 
 	const thisExerciseTillBar = asPath.substring(asPath.indexOf("/") + 1)
 	const thisExerciseTillBar2 = thisExerciseTillBar.substring(thisExerciseTillBar.indexOf("/") + 1)
 	const thisExercise = thisExerciseTillBar2.substring(thisExerciseTillBar2.indexOf("/") + 1)
 	const thisSubject = thisExerciseTillBar2.substring(0, thisExerciseTillBar2.indexOf("/"))
+
 
 	return (
 		<div className="flex flex-1 h-screen font-poppins">

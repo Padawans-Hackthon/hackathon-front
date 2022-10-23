@@ -16,16 +16,20 @@ import jwt_decode from "jwt-decode"
 import { useEffect, useState } from "react"
 import { getPosts } from "../assets/useCases/getPosts"
 
+import { useToast } from "@chakra-ui/react"
+import { DropdownSubject } from "../components/DropdownSubject"
+
 interface ForumProps {
 	token: string
 	posts: ResponseCardProps[]
 }
 
 const Forum = ({ token, posts }: ForumProps) => {
+	const toast = useToast()
 	const userData: userProps = jwt_decode(token)
 	const [isTeacher, setIsTeacher] = useState(false)
-
-	console.log(posts)
+	const subjects = userData.user.teacher[0].subject
+	const [selected, setSelected] = useState(subjects[0])
 
 	const { handleSubmit, register, reset } = useForm()
 	const { reload } = useRouter()
@@ -36,19 +40,33 @@ const Forum = ({ token, posts }: ForumProps) => {
 	}
 
 	async function onSubmit(formData: any) {
-		await api.post("/forum", {
-			pk: userData.user.pk,
-			sk: formData.title,
-			user: userData.user.name,
-			title: formData.title,
-			question: formData.question,
-			likes: 1,
-			subject: "Robotica",
-		})
+		try {
+			await api.post("/forum", {
+				user: userData.user.student.name,
+				title: formData.title,
+				question: formData.question,
+				subject: selected,
+				sk: formData.title
+			})
+
+			toast({
+				title: "Criado",
+				duration: 4000,
+				isClosable: true,
+				status: "success"
+			})
+		} catch {
+			toast({
+				title: "Algo deu errado",
+				duration: 4000,
+				isClosable: true,
+				status: "error"
+			})
+		}
 	}
 
 	useEffect(() => {
-		setIsTeacher(userData.user.permissionType === "teacher")
+		setIsTeacher(userData.user.student.permissionType === "teacher")
 	}, [])
 
 	return (
@@ -68,7 +86,9 @@ const Forum = ({ token, posts }: ForumProps) => {
 				</header>
 				<div className="flex items-center flex-1 mt-16 flex-col">
 					{isTeacher ? (
-						<div className="flex-1 text-white text-7xl font-semibold font-poppins mb-6">Arquitetura</div>
+						<div className="flex-1 text-white text-7xl font-semibold font-poppins mb-6">
+							Arquitetura
+						</div>
 					) : (
 						<form
 							className="bg-white w-[70vw] h-[40vh] rounded-3xl flex flex-col items-center gap-8 py-8"
@@ -89,7 +109,7 @@ const Forum = ({ token, posts }: ForumProps) => {
 									/>
 								</div>
 								<div className="flex flex-1 justify-center items-center">
-									<p>Disciplina</p>
+									<DropdownSubject subjects={subjects} selected={selected} setSelected={setSelected}/>
 								</div>
 							</div>
 							<textarea
@@ -116,9 +136,9 @@ const Forum = ({ token, posts }: ForumProps) => {
 					)}
 					<div className="mt-8 flex justify-center rounded-xl mb-4">
 						<div className="bg-white w-[90%] rounded-xl ">
-							{ posts.map( e => (
-								<ResponseCard key={e.title}  question={e.question} user={e.user}/>
-							)) }
+							{posts.map((e) => (
+								<ResponseCard key={e.title} question={e.question} user={e.user} subject={e.subject} isTeacher={isTeacher}/>
+							))}
 						</div>
 					</div>
 				</div>
@@ -137,7 +157,7 @@ export async function getServerSideProps(ctx?: any) {
 		return {
 			props: {
 				token,
-				posts: response
+				posts: response,
 			},
 		}
 	}

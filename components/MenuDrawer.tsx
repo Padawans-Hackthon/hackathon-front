@@ -14,7 +14,7 @@ import { MdOutlinePeopleAlt } from "react-icons/md"
 import { parseCookies, destroyCookie } from "nookies"
 import jwt_decode from "jwt-decode"
 import { GoBook } from "react-icons/go"
-
+import { GrSubtract } from "react-icons/gr"
 
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -24,22 +24,21 @@ export const MenuDrawer = () => {
 	const { asPath, reload } = useRouter()
 	const { isOpen, onClose, onOpen } = useDisclosure()
 
-    const [subjects, setSubjects] = useState<[]>([])
+	const [subjects, setSubjects] = useState<string[]>([])
 
 	const thisSubjectTillBar = asPath.substring(asPath.indexOf("/") + 1)
 	const thisSubject = thisSubjectTillBar.substring(thisSubjectTillBar.indexOf("/") + 1)
 
-    function signOut() {
+	function signOut() {
 		destroyCookie(null, "loginauth.token")
 		reload()
 	}
 
 	useEffect(() => {
-	const { ["loginauth.token"]: token } = parseCookies()
-	const userData: userProps = jwt_decode(token)
+		const { ["loginauth.token"]: token } = parseCookies()
+		const userData: userProps = jwt_decode(token)
 
-	setSubjects(userData.user.subject)
-		
+		setSubjects(userData.user.teacher[0].subject)
 	}, [])
 
 	return (
@@ -68,28 +67,31 @@ export const MenuDrawer = () => {
 							</div>
 							<div className="flex gap-3 items-center">
 								<MdOutlinePeopleAlt size={32} className="text-white" />
-								<Link href="/">
+								<Link href="/forum">
 									<a
 										className="text-white text-xl font-poppins"
 										style={{
-											color: asPath === "/account" ? "#00AA96" : "white",
+											color: asPath === "/forum" ? "#00AA96" : "white",
 										}}
 									>
-										Perfil
+										Fórum
 									</a>
 								</Link>
 							</div>
 							<div className="flex gap-3 items-center text-white">
-                                <GoBook size={32}/>
-                                <p className="text-white text-xl font-poppins">Disciplinas</p>
-                            </div>
-                            <div className="max-h-[25vh] overflow-y-scroll flex flex-col gap-6 text-white text-xl font-poppins ml-4 scrollbar scrollbar-thumb-gray-800 scrollbar-track-gray-600">
-                                { subjects.map(e => (
-									<Link key={e} href={`/subjects/${e}`}>
-										<a>{e}</a>
-									</Link>
-								)) }
-                            </div>
+								<GoBook size={32} />
+								<p className="text-white text-xl font-poppins">Disciplinas</p>
+							</div>
+							<div className="max-h-[25vh] overflow-y-scroll flex flex-col gap-6 text-white text-xl font-poppins ml-4 scrollbar scrollbar-thumb-gray-800 scrollbar-track-gray-600">
+								{subjects.map((e) => (
+									<div className="flex gap-2 items-center" key={e}>
+										<GrSubtract color="white"/>
+										<Link href={`/subjects/${e}`}>
+											<a>{e}</a>
+										</Link>
+									</div>
+								))}
+							</div>
 						</div>
 					</DrawerBody>
 

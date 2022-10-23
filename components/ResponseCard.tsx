@@ -2,8 +2,11 @@ import { BsPerson, BsChatRight } from "react-icons/bs"
 import { ImImages } from "react-icons/im"
 import { BiHappyAlt } from "react-icons/bi"
 import { TbArrowBigTop, TbArrowBigDown } from "react-icons/tb"
+import { BsCircle } from "react-icons/bs"
+import { FaCheckCircle } from "react-icons/fa"
 
 import { Divider } from "@chakra-ui/react"
+import { useState } from "react"
 
 export interface ResponseCardProps {
 	subject?: string
@@ -13,9 +16,12 @@ export interface ResponseCardProps {
 	sk?: string
 	pk?: string
 	title?: string
+	isTeacher?: boolean
 }
 
-export const ResponseCard = ({ question, user }: ResponseCardProps) => {
+export const ResponseCard = ({ question, user, subject, isTeacher }: ResponseCardProps) => {
+	const [isClosed, setIsClosed] = useState(false)
+
 	return (
 		<div className="box-content">
 			<div className="flex justify-center mt-4 font-poppins">
@@ -25,18 +31,32 @@ export const ResponseCard = ({ question, user }: ResponseCardProps) => {
 				<div className="w-[80%] ml-4">
 					<div className="flex justify-between">
 						<div>
-							<p className="font-bold text-3xl mt-6">{ user }</p>
-							<p className="text-xl mt-4">
-								{ question }
-							</p>
+							<p className="font-bold text-3xl mt-6">{user}</p>
+							<p className="text-xl mt-4">{question}</p>
 							<div className="flex gap-2 mt-4 items-center">
 								<BsChatRight size={32} />
 								<p className="text-lg">0</p>
 							</div>
 						</div>
-                        <div className="flex flex-col gap-3 mt-12">
-							<TbArrowBigTop size={24} className="text-blue-500 cursor-pointer" />
-							<TbArrowBigDown size={24} className="text-red-500 cursor-pointer" />
+						<div className="flex gap-3">
+							<p className="text-gray-600">{subject}</p>
+							<div className="flex flex-col gap-3 mt-12">
+								<TbArrowBigTop size={24} className="text-blue-500 cursor-pointer" />
+								<TbArrowBigDown size={24} className="text-red-500 cursor-pointer" />
+								{isTeacher && !isClosed ? (
+									<FaCheckCircle
+										size={24}
+										onClick={() => setIsClosed(!isClosed)}
+										className="cursor-pointer text-green-400"
+									/>
+								) : (
+									<BsCircle
+										size={24}
+										onClick={() => setIsClosed(!isClosed)}
+										className="cursor-pointer"
+									/>
+								)}
+							</div>
 						</div>
 					</div>
 					<input

@@ -2,7 +2,7 @@ import { ExerciceCard } from "../../../components/ExerciseCard"
 
 import { AiOutlinePoweroff, AiOutlineMenu, AiOutlineHome } from "react-icons/ai"
 import { MdOutlinePeopleAlt } from "react-icons/md"
-import { IoRemove } from "react-icons/io5"
+import { BsPerson } from "react-icons/bs"
 import { GoBook } from "react-icons/go"
 import { parseCookies } from "nookies"
 import jwt_decode from "jwt-decode"
@@ -18,7 +18,7 @@ import {
 	DrawerOverlay,
 	DrawerContent,
 	DrawerCloseButton,
-	useDisclosure
+	useDisclosure,
 } from "@chakra-ui/react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -27,17 +27,19 @@ import { userProps } from "../../index"
 const Subjects = () => {
 	const { asPath } = useRouter()
 	const { isOpen, onClose, onOpen } = useDisclosure()
-	const [subjects, setSubjects] = useState<[]>([])
+	const [subjects, setSubjects] = useState<string[]>([])
+	const [isTeacher, setIsTeacher] = useState(false)
+
+	const { ["loginauth.token"]: token } = parseCookies()
+	const userData: userProps = jwt_decode(token)
 
 	const thisSubjectTillBar = asPath.substring(asPath.indexOf("/") + 1)
 	const thisSubject = thisSubjectTillBar.substring(thisSubjectTillBar.indexOf("/") + 1)
 
 	useEffect(() => {
-	const { ["loginauth.token"]: token } = parseCookies()
-	const userData: userProps = jwt_decode(token)
+		setSubjects(userData.user.teacher[0].subject)
 
-	setSubjects(userData.user.subject)
-		
+		setIsTeacher(userData.user.student.permissionType === "teacher")
 	}, [])
 
 	return (
@@ -50,19 +52,34 @@ const Subjects = () => {
 						className="text-white cursor-pointer"
 						size={32}
 					/>
-					<p className="text-white text-xl">{ thisSubject }</p>
+					<p className="text-white text-xl">{thisSubject}</p>
 				</div>
 				<div className="flex-1 h-screen bg-gradient-to-b from-[#04AF91] to-[#001D18] w-[30%]">
 					<div className=" bg-[url('/circles-subject.svg')] bg-cover flex-1 h-full">
 						<div className="text-white flex flex-col gap-12 items-center">
 							<div className="flex flex-col gap-4 items-center mt-48">
-								<div className="w-[8vw] h-[8vw] bg-gray-200 rounded-full"></div>
-								<p className="text-lg">Nome do professor</p>
+								<div className="w-[8vw] h-[8vw] bg-gray-200 rounded-full text-black flex justify-center items-center">
+									<BsPerson size={100}/>
+								</div>
+								<p className="text-lg">{ userData.user.teacher[0].name }</p>
 							</div>
-							<div className="flex flex-col gap-2 items-center">
-								<p className="font-bold">EMAIL</p>
-								<p>joaofalasozinho@gmail.com</p>
-							</div>
+							{isTeacher ? (
+								<div className="flex flex-col gap-6 w-full items-center">
+									<Link href="/forum">
+										<a className="bg-white rounded-lg text-black w-[60%] py-3 text-center text-xl font-semibold">
+											Fórum
+										</a>
+									</Link>
+									<div className="bg-white rounded-lg text-black w-[60%] py-3 text-center text-xl font-semibold">
+											+ Adicionar exercício
+									</div>
+								</div>
+							) : (
+								<div className="flex flex-col gap-2 items-center">
+									<p className="font-bold">EMAIL</p>
+									<p>joaofalasozinho@gmail.com</p>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -72,10 +89,10 @@ const Subjects = () => {
 						Exercícios
 					</p>
 					<div className="mt-20 flex flex-col gap-16 ml-28 overflow-y-scroll max-h-[60vh]">
-						<ExerciceCard subject={thisSubject}/>
-						<ExerciceCard subject={thisSubject}/>
-						<ExerciceCard subject={thisSubject}/>
-						<ExerciceCard subject={thisSubject}/>
+						<ExerciceCard subject={thisSubject} isTeacher={isTeacher} />
+						<ExerciceCard subject={thisSubject} isTeacher={isTeacher} />
+						<ExerciceCard subject={thisSubject} isTeacher={isTeacher} />
+						<ExerciceCard subject={thisSubject} isTeacher={isTeacher} />
 					</div>
 				</div>
 			</div>
@@ -111,16 +128,16 @@ const Subjects = () => {
 								</Link>
 							</div>
 							<div className="flex gap-3 items-center text-white">
-                                <GoBook size={32}/>
-                                <p className="text-white text-xl font-poppins">Disciplinas</p>
-                            </div>
-                            <div className="max-h-[25vh] overflow-y-scroll flex flex-col gap-6 text-white text-xl font-poppins ml-4 scrollbar scrollbar-thumb-gray-800 scrollbar-track-gray-600">
-                                { subjects.map(e => (
+								<GoBook size={32} />
+								<p className="text-white text-xl font-poppins">Disciplinas</p>
+							</div>
+							<div className="max-h-[25vh] overflow-y-scroll flex flex-col gap-6 text-white text-xl font-poppins ml-4 scrollbar scrollbar-thumb-gray-800 scrollbar-track-gray-600">
+								{subjects.map((e) => (
 									<Link key={e} href={`/subjects/${e}`}>
 										<a>{e}</a>
 									</Link>
-								)) }
-                            </div>
+								))}
+							</div>
 						</div>
 					</DrawerBody>
 

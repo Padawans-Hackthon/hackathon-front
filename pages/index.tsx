@@ -21,16 +21,18 @@ import {
 } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 
+type TeacherProps = {
+	name: string
+	subject: string[]
+}
+
 export interface userProps {
 	user: {
-		email: string
-		enroll: string
-		id: string
-		name: string
-		password: string
-		permissionType: "student" | "teacher"
-		subject: []
-		pk: string
+		student: {
+			name: string
+			permissionType: "student" | "teacher"
+		}
+		teacher: TeacherProps[]
 	}
 }
 
@@ -40,13 +42,14 @@ const Home = ({ token }: any) => {
 	const userData: userProps = jwt_decode(token)
 	const [isTeacher, setIsTeacher] = useState(false)
 
+
 	function signOut() {
 		destroyCookie(null, "loginauth.token")
 		reload()
 	}
 	
 	useEffect(() => {
-		setIsTeacher(userData.user.permissionType === "teacher")
+		setIsTeacher(userData.user.student.permissionType === "teacher")
 	}, [])
 
 	return (
@@ -63,7 +66,7 @@ const Home = ({ token }: any) => {
 								<BsPerson size={56}/>
 							</div>
 							<p className="text-gray-200 font-semibold font-poppins text-xl">
-								{ userData.user.name }
+								{ userData.user.student.name}
 							</p>
 						</div>
 					</div>
@@ -83,8 +86,8 @@ const Home = ({ token }: any) => {
 			<div className="max-w-screen-xl mt-24 m-auto">
 				<p className="text-3xl font-poppins">Disciplina</p>
 				<div className="mt-4 flex justify-evenly flex-wrap">
-					{userData.user.subject.map((e) => (
-						<SubjectCard color="#C64736" subject={e} teacher="Fulano" key={e} isTeacher={isTeacher}/>
+					{userData.user.teacher[0].subject.map((e) => (
+						<SubjectCard color="#C64736" subject={e} teacher={userData.user.teacher[0].name} key={e} isTeacher={isTeacher}/>
 					))}
 				</div>
 			</div>
@@ -108,14 +111,14 @@ const Home = ({ token }: any) => {
 							</div>
 							<div className="flex gap-3 items-center">
 								<MdOutlinePeopleAlt size={32} className="text-white" />
-								<Link href="/">
+								<Link href="/forum">
 									<a
 										className="text-white text-xl font-poppins"
 										style={{
-											color: asPath === "/account" ? "#00AA96" : "white",
+											color: asPath === "/forum" ? "#00AA96" : "white",
 										}}
 									>
-										Perfil
+										Fórum
 									</a>
 								</Link>
 							</div>
